@@ -11,7 +11,10 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 from app.config import settings
 from app.database import Base
-
+from app.hotels.models import Hotels # noqa
+from app.hotels.rooms.models import Rooms # noqa
+from app.users.models import Users # noqa
+from app.bookings.models import Bookings # noqa
 
 sys.path.insert(0, dirname(dirname(dirname(abspath(__file__)))))
 
