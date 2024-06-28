@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 
 from app.users.auth import get_password_hash
 from app.users.dao import UserDAO
-from app.users.shemas import SUserAuth
+from app.users.schemas import SUserAuth
 
 
 router = APIRouter(
