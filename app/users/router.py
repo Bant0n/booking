@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 
 from app.users.auth import get_password_hash
 from app.users.dao import UserDAO
-from app.users.shemas import SUserRegister
+from app.users.shemas import SUserAuth
 
 
 router = APIRouter(
@@ -12,7 +12,7 @@ router = APIRouter(
 
 
 @router.post("/register")
-async def register_uer(user_data: SUserRegister):
+async def register_uer(user_data: SUserAuth):
     existing_user = await UserDAO.find_one_or_none(email=user_data.email)
 
     if existing_user:
