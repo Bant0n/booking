@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Response
+from fastapi import APIRouter, HTTPException, Response, status
 
 from app.users.auth import (
     authenticate_user,
@@ -39,7 +39,8 @@ async def login_user(response: Response, user_data: SUserAuth):
 
     if not user:
         raise HTTPException(
-            status_code=401, detail="Неправильные данные для входа"
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Неправильные данные для входа",
         )
 
     access_token = create_access_token({"sub": str(user.id)})
