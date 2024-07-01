@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     DB_USER: str
     DB_PASS: str
     DB_NAME: str
-    ALGORITM: str
+    ALGORITHM: str
     KEY: str
 
     class Config:
