@@ -14,3 +14,13 @@ class SBooking(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class SBookingRoom(SBooking):
+    image_id: int
+    name: str
+    description: str | None
+    services: list[str]
+
+    class Config:
+        from_attributes = True
