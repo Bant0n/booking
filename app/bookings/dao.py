@@ -12,6 +12,20 @@ class BookingDAO(BaseDAO):
     model = Bookings
 
     @classmethod
+    async def find_by_user(cls, user_id: int):
+        async with async_session_maker() as session:
+            stmt = (
+                select(
+                    Bookings.__table__.columns,
+                    Rooms.__table__.columns,
+                )
+                .join(Rooms, Rooms.id == Bookings.room_id, isouter=True)
+                .where(Bookings.user_id == user_id)
+            )
+            result = await session.execute(stmt)
+            return result.mappings().all()
+
+    @classmethod
     async def add(
         cls,
         user_id: int,
