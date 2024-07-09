@@ -1,6 +1,6 @@
-from datetime import date
+from datetime import date, datetime, timedelta
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 
 from app.hotels.dao import HotelDAO
 from app.hotels.schemas import SHotel, SHotelInfo
@@ -16,8 +16,13 @@ async def all_hotels():
 @router.get("/{location}")
 async def get_hotels_by_location(
     location: str,
-    date_from: date,
-    date_to: date,
+    date_from: date = Query(
+        ..., description=f"Например, {datetime.now().date()}"
+    ),
+    date_to: date = Query(
+        ...,
+        description=f"Например, {(datetime.now() + timedelta(days=14)).date()}"
+    ),
 ) -> list[SHotelInfo]:
     return await HotelDAO.get_by_location(location, date_from, date_to)
 
