@@ -5,8 +5,11 @@ from fastapi.staticfiles import StaticFiles
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
+from sqladmin import Admin
 
+from app.admin.views import BookingsAdmin, HotelsAdmin, RoomsAdmin, UsersAdmin
 from app.bookings.router import router as bookings_router
+from app.database import engine
 from app.hotels.rooms.router import router as hotels_router
 from app.images.router import router as images_router
 from app.pages.router import router as pages_router
@@ -50,6 +53,13 @@ def startup():
         "redis://localhost", encoding="utf8", decode_responses=True
     )
     FastAPICache.init(RedisBackend(redis), prefix="cache")
+
+
+admin = Admin(app, engine)
+admin.add_view(UsersAdmin)
+admin.add_view(BookingsAdmin)
+admin.add_view(HotelsAdmin)
+admin.add_view(RoomsAdmin)
 
 
 if __name__ == "__main__":
