@@ -2,6 +2,9 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from redis import asyncio as aioredis
 
 from app.bookings.router import router as bookings_router
 from app.hotels.rooms.router import router as hotels_router
@@ -39,6 +42,14 @@ app.add_middleware(
         "Authorization",
     ],
 )
+
+
+@app.on_event("startup")
+def startup():
+    redis = aioredis.from_url(
+        "redis://localhost", encoding="utf8", decode_responses=True
+    )
+    FastAPICache.init(RedisBackend(redis), prefix="cache")
 
 
 if __name__ == "__main__":
