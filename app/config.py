@@ -1,7 +1,11 @@
+from typing import Literal
+
 from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
+    MODE: Literal["DEV", "PROD", "TEST"]
+
     DB_HOST: str
     DB_PORT: int
     DB_USER: str
@@ -9,6 +13,16 @@ class Settings(BaseSettings):
     DB_NAME: str
     ALGORITHM: str
     KEY: str
+
+    TEST_DB_HOST: str
+    TEST_DB_PORT: int
+    TEST_DB_USER: str
+    TEST_DB_PASS: str
+    TEST_DB_NAME: str
+
+    @property
+    def TEST_DATABASE_URL(self):
+        return f"postgresql+asyncpg://{self.TEST_DB_USER}:{self.TEST_DB_PASS}@{self.TEST_DB_HOST}:{self.TEST_DB_PORT}/{self.TEST_DB_NAME}"  # noqa
 
     class Config:
         env_file = ".env"
