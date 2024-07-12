@@ -1,3 +1,6 @@
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,7 +19,17 @@ from app.images.router import router as images_router
 from app.pages.router import router as pages_router
 from app.users.router import router as users_router
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    redis = aioredis.from_url(
+        "redis://localhost", encoding="utf8", decode_responses=True
+    )
+    FastAPICache.init(RedisBackend(redis), prefix="cache")
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 app.mount("/static", StaticFiles(directory="app/static"), "static")
 
@@ -46,14 +59,6 @@ app.add_middleware(
         "Authorization",
     ],
 )
-
-
-@app.on_event("startup")
-def startup():
-    redis = aioredis.from_url(
-        "redis://localhost", encoding="utf8", decode_responses=True
-    )
-    FastAPICache.init(RedisBackend(redis), prefix="cache")
 
 
 admin = Admin(app, engine, authentication_backend=authentication_backend)
