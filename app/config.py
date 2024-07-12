@@ -1,6 +1,7 @@
 from typing import Literal
 
 from pydantic_settings import BaseSettings
+from pydantic import ConfigDict
 
 
 class Settings(BaseSettings):
@@ -24,8 +25,10 @@ class Settings(BaseSettings):
     def TEST_DATABASE_URL(self):
         return f"postgresql+asyncpg://{self.TEST_DB_USER}:{self.TEST_DB_PASS}@{self.TEST_DB_HOST}:{self.TEST_DB_PORT}/{self.TEST_DB_NAME}"  # noqa
 
-    class Config:
-        env_file = ".env"
+    # class Config():
+    #     env_file = ".env"
+
+    model_config = ConfigDict(env_file=".env")
 
     @property
     def DATABASE_URL(self):
