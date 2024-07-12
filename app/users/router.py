@@ -26,7 +26,7 @@ async def get_users():
 
 
 @router.post("/register")
-async def register_uer(user_data: SUserAuth):
+async def register_user(user_data: SUserAuth):
     existing_user = await UserDAO.find_one_or_none(email=user_data.email)
 
     if existing_user:
