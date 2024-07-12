@@ -113,7 +113,13 @@ class BookingDAO(BaseDAO):
                         date_to=date_to,
                         price=price,
                     )
-                    .returning(Bookings)
+                    .returning(
+                        Bookings.id,
+                        Bookings.user_id,
+                        Bookings.room_id,
+                        Bookings.date_from,
+                        Bookings.date_to,
+                    )
                 )
 
                 new_booking = await session.execute(add_booking)
