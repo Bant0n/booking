@@ -13,6 +13,7 @@ from sqladmin import Admin
 from app.admin.auth import authentication_backend
 from app.admin.views import BookingsAdmin, HotelsAdmin, RoomsAdmin, UsersAdmin
 from app.bookings.router import router as bookings_router
+from app.config import settings
 from app.database import engine
 from app.hotels.rooms.router import router as hotels_router
 from app.images.router import router as images_router
@@ -23,7 +24,9 @@ from app.users.router import router as users_router
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     redis = aioredis.from_url(
-        "redis://localhost", encoding="utf8", decode_responses=True
+        f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}",
+        encoding="utf8",
+        decode_responses=True,
     )
     FastAPICache.init(RedisBackend(redis), prefix="cache")
     yield
