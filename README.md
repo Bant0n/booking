@@ -5,21 +5,27 @@
 ## Запуск приложения
 
 Для запуска FastAPI используется веб-сервер uvicorn. Команда для запуска выглядит так:
+
 ```
 uvicorn main:app --reload
 ```
+
 Либо же:
+
 ```
 python main.py
 ```
+
 Ее необходимо запускать в командной строке.
 
 ### Celery & Flower
 
 Для запуска Celery используется команда
+
 ```
 celery --app=app.tasks.celery:celery worker -l INFO -P solo
 ```
+
 Обратите внимание, что `-P solo` используется только на Windows, так как у Celery есть проблемы с работой на Windows.
 Для запуска Flower используется команда
 
@@ -35,15 +41,20 @@ celery --app=app.tasks.celery:celery flower
 ```
 docker build .
 ```
+
 Команда также запускается из корневой директории, в которой лежит файл Dockerfile.
 
 ### Docker compose
+
 Для запуска всех сервисов (БД, Redis, веб-сервер (FastAPI), Celery) необходимо использовать файл docker-compose.yml и команды
+
 ```
 docker compose build
 docker compose up
 ```
+
 Причем `build` команду нужно запускать, только если вы меняли что-то внутри Dockerfile, то есть меняли логику составления образа.
 
 ## Telegram
-https://t.me/B4nton
+
+<https://t.me/B4nton>
